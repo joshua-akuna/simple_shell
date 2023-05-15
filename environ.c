@@ -42,7 +42,7 @@ char *_getenv(record_t *envps, const char *key)
 		str = (char *)node->str;
 		if (strncmp(str, key, len) == 0 && str[len] == '=')
 		{
-			ptr = strdup(str + len + 1);
+			ptr = _strdup(str + len + 1);
 			vlen = _strlen(str) - len;
 			ptr[vlen] = '\0';
 			return (ptr);
@@ -68,13 +68,15 @@ int printenv(shell_t *state)
  * _setenv - changes or add an environment variable.
  * @state: a struct of type shell_t that stores the current
  *	state of the shell.
+ * @new_name: name of the environment variable to add.
+ * @new_value: a new value for the environment variable @name
  * Return: 0 on success or -1 on error.
  */
-int _setenv(shell_t *state)
+int _setenv(shell_t *state, char *new_name, char *new_value)
 {
 	record_t *envlist = state->envps;
-	char *name = state->cmds[1];
-	char *value = state->cmds[2];
+	char *name = new_name;
+	char *value = new_value;
 	const char *var = NULL, *sep = "=";
 	char *str = NULL;
 	int overwrite = 0;

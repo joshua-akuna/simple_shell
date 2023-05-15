@@ -14,10 +14,12 @@ int run_cmd(shell_t *state)
 	tokenize(args, state->line, " \t\n");
 	state->cmds = args;
 
-	if (_strcmp(state->cmds[0], "env") == 0)
+	if (_strcmp(state->cmds[0], "cd") == 0)
+		_cddir(state);
+	else if (_strcmp(state->cmds[0], "env") == 0)
 		printenv(state);
 	else if (_strcmp(state->cmds[0], "setenv") == 0)
-		_setenv(state);
+		_setenv(state, state->cmds[1], state->cmds[2]);
 	else if (_strcmp(state->cmds[0], "unsetenv") == 0)
 		_unsetenv(state);
 	else
@@ -100,7 +102,8 @@ char *is_sys_cmd(char *cmd, record_t *pathenv)
 	{
 		token = (char *)pathvp->str;
 		absolute_path = append_file_to_dir(cmd, token);
-		if (stat(absolute_path, &st) == 0)
+		if (stat(absolute_path, &st) == 0
+				&& st.st_mode & S_IXUSR)
 			return (absolute_path);
 		free(absolute_path);
 		pathvp = pathvp->next;

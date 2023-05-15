@@ -88,7 +88,7 @@ char *append_file_to_dir(char *file, char *dir);
 int init_envp_list(record_t **head);
 int printenv(shell_t *state);
 char *_getenv(record_t *head, const char *key);
-int _setenv(shell_t *state);
+int _setenv(shell_t *state, char *name, char *new_value);
 int _unsetenv(shell_t *state);
 
 int init_pathvp(record_t **pathenv, record_t *env);
@@ -106,4 +106,6 @@ int tokenize(char *tokens[], char *str, const char *delim);
 
 int execute(shell_t *state);
 int run_cmd(shell_t *state);
+
+int _cddir(shell_t *state);
 #endif

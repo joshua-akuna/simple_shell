@@ -35,6 +35,14 @@ record_t *add_node_to_tail(record_t **head, const char *str)
 	return (new_node);
 }
 
+/**
+ * delete_node_by_id - finds a node of type record_t by it
+ *	id field and removes it from the linked list.
+ * @head: a struct record_t type pointer to the
+ *	first node of the linked list.
+ * @id: the id of the node to delete.
+ * Return: 0 if successful else -1.
+ */
 int delete_node_by_id(record_t **head, unsigned int id)
 {
 	record_t *prev_node;
