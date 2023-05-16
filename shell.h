@@ -112,4 +112,8 @@ int _cddir(shell_t *state);
 /*exit function*/
 int exit_shell(data_shell *datash)
 
+/* getline functions */
+void bring_line(char **lineptr, size_t *n, char *buffer, size_t j)
+ssize_t get_line(char **lineptr, size_t *n, FILE *stream)
+
 #endif
