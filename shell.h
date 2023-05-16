@@ -108,4 +108,8 @@ int execute(shell_t *state);
 int run_cmd(shell_t *state);
 
 int _cddir(shell_t *state);
+
+/*exit function*/
+int exit_shell(data_shell *datash)
+
 #endif
