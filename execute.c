@@ -1,4 +1,5 @@
 #include "shell.h"
+int isvalidcmd(char *cmd);
 /**
  * run_cmd - finds the path to the executive program command
  *	and executes it.
@@ -10,8 +11,10 @@ int run_cmd(shell_t *state)
 {
 	char *args[16];
 	int status = 0;
+	/* cloning line for this file */
+	char *line = _strdup(state->line);
 
-	tokenize(args, state->line, " \t\n");
+	tokenize(args, line, " \t\n");
 	state->cmds = args;
 
 	if (_strcmp(state->cmds[0], "cd") == 0)
@@ -22,19 +25,23 @@ int run_cmd(shell_t *state)
 		_setenv(state, state->cmds[1], state->cmds[2]);
 	else if (_strcmp(state->cmds[0], "unsetenv") == 0)
 		_unsetenv(state);
+	else if (_strcmp(state->cmds[0], "alias") == 0)
+		handle_alias(state);
 	else
 	{
 		/*_puts("no match");*/
 		state->cmd_path = is_sys_cmd(args[0], state->path);
 		if (state->cmd_path == NULL)
 		{
+			free(line);
 			/* TODO: write a function to print errors.*/
-			dprintf(STDERR_FILENO, "%s: command not found\n", args[0]);
 			return (127);
 		}
 		status = execute(state);
 		free(state->cmd_path);
 	}
+	/* freeing line for this file */
+	free(line);
 	return (status);
 }
 
@@ -93,22 +100,53 @@ char *is_sys_cmd(char *cmd, record_t *pathenv)
 {
 	record_t *pathvp = pathenv;
 	char *absolute_path = NULL, *token = NULL;
-	struct stat st;
+	int res;
 
-	if (stat(cmd, &st) == 0)
+	res = isvalidcmd(cmd);
+	if (res == 0)
 		return (cmd);
 
 	while (pathvp)
 	{
 		token = (char *)pathvp->str;
 		absolute_path = append_file_to_dir(cmd, token);
-		if (stat(absolute_path, &st) == 0
-				&& st.st_mode & S_IXUSR)
+		res = isvalidcmd(absolute_path);
+		if (res == 0)
 			return (absolute_path);
 		free(absolute_path);
 		pathvp = pathvp->next;
 	}
+	if (res == -1)
+		dprintf(STDERR_FILENO, "%s: command not found\n", cmd);
+	else if (res == -2)
+		dprintf(STDERR_FILENO, "%s: permission denied\n", cmd);
+	else if (res == -3)
+		dprintf(STDERR_FILENO, "-bash: %s: Is a directory\n", cmd);
 	return (NULL);
+}
+
+/**
+ * isvalidcmd - checks if the user command is a valid executable program.
+ * @cmd: the user command to validate.
+ * Return: 0 if command is a valid executable program
+ *	else -1
+ */
+int isvalidcmd(char *cmd)
+{
+	struct stat st;
+
+	if (stat(cmd, &st) == 0
+			&& S_ISREG(st.st_mode)
+			&& st.st_mode & S_IXUSR)
+		return (0);
+	else if (stat(cmd, &st) == 0
+			&& S_ISREG(st.st_mode)
+			&& !(st.st_mode & S_IXUSR))
+		return (-2);
+	else if (stat(cmd, &st) == 0
+			&& S_ISDIR(st.st_mode))
+		return (-3);
+	return (-1);
 }
 
 /**

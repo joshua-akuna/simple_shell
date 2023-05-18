@@ -23,6 +23,6 @@ int main(int ac, char **av)
 	/* frees the nodes of the environ and path linked list */
 	free_list(state.path);
 	free_list(state.envps);
-
+	free_list(state.aliases);
 	return (0);
 }

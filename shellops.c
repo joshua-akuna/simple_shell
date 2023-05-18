@@ -27,6 +27,5 @@ int infinite_loop(shell_t *state)
 		free(state->line);
 		state->line = NULL;
 	}
-
 	return (0);
 }

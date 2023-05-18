@@ -88,11 +88,11 @@ void free_list(record_t *head)
 
 	if (head == NULL)
 		return;
-
 	free_list(head->next);
 	str = (char *)head->str;
 	free(str);
 	free(head);
+	head = NULL;
 }
 
 /**

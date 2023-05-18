@@ -71,3 +71,76 @@ char *_strchr(char *str, const char c)
 
 	return (NULL);
 }
+
+/**
+ * _strstr - finds the first occurence of "needle" in "haystack".
+ * @haystack: a string in which the "needle" is scanned for.
+ * @needle: a string whose index pointer is to be scanned for
+ *	in "haystack".
+ * Return: a pointer to the first occurrence of "needle" if found
+ *	else NULL.
+ */
+char *_strstr(char *haystack, char *needle)
+{
+	unsigned int i, j, found;
+
+	if (haystack == NULL)
+		return (NULL);
+
+	if (needle == NULL || *needle == '\0')
+		return (haystack);
+
+	(void)found;
+	for (i = 0; haystack[i]; i++)
+	{
+		found = 1;
+		j = 0;
+
+		if (haystack[i] == needle[j])
+		{
+			for (; needle[j]; j++)
+			{
+				if (needle[j] != haystack[i + j])
+				{
+					found = 0;
+					break;
+				}
+			}
+			if (found)
+				return (haystack + i);
+		}
+	}
+	return (NULL);
+}
+
+/**
+ * _strpbrk - finds the first occurence of a byte in "search"
+ *	that matches any byte in the "accept".
+ * @search: a string whose bytes is to be searched.
+ * @accept: a string whose byte is to be searched for in "search".
+ * Return: a pointer to the byte in "search" that mathces any byte
+ *	in "accept".
+ */
+char *_strpbrk(char *search, const char *accept)
+{
+	unsigned int i = 0, j = 0, found;
+
+	while (search[i] != '\0')
+	{
+		found = 0;
+		j = 0;
+		while (accept[j] != '\0')
+		{
+			if (search[i] == accept[j])
+			{
+				found = 1;
+				break;
+			}
+			j++;
+		}
+		if (found)
+			return (search + i);
+		i++;
+	}
+	return (NULL);
+}

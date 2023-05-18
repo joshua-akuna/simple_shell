@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <unistd.h>
+#include <limits.h>
 #include <stdint.h>
 #include <string.h>
 #include <errno.h>
@@ -71,18 +72,28 @@ int _puts(const char *str);
 /* string[1|2].c functions */
 int _strlen(const char *str);
 char *_strchr(char *str, const char c);
+char *_strstr(char *haystack, char *needle);
 char *_strcat(char *dest, const char *src);
 char *_strncat(char *dest, char *src, const unsigned int n);
 int _strcmp(char *str1, char *str2);
 int _strncmp(const char *str1, const char *str2, const unsigned int n);
+char *_strpbrk(char *search, const char *accept);
 char *_strdup(char *src);
 char *_memcpy(void *dest, const void *src, size_t n);
+
+char *_strtok(char *str, const char *delim);
 
 size_t _malloc_usable_size(void *ptr);
 void *_realloc(void *old_blk, size_t size);
 
 char *is_sys_cmd(char *cmd, record_t *pathenv);
+
+/* aliases.c functions */
 char *append_file_to_dir(char *file, char *dir);
+int handle_alias(shell_t *state);
+int print_all_aliases(shell_t *state);
+int print_aliases_by_name(shell_t *state);
+int put_alias(shell_t *state);
 
 /* environ.c functions */
 int init_envp_list(record_t **head);
@@ -110,10 +121,10 @@ int run_cmd(shell_t *state);
 int _cddir(shell_t *state);
 
 /*exit function*/
-int exit_shell(data_shell *datash)
+int exit_shell(shell_t *datash);
 
 /* getline functions */
-void bring_line(char **lineptr, size_t *n, char *buffer, size_t j)
-ssize_t get_line(char **lineptr, size_t *n, FILE *stream)
+void bring_line(char **lineptr, size_t *n, char *buffer, size_t j);
+ssize_t get_line(char **lineptr, size_t *n, FILE *stream);
 
 #endif

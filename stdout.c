@@ -18,6 +18,9 @@ int _puts(const char *str)
 {
 	int nwrite;
 
+	if (str == NULL)
+		return (-1);
+
 	for (nwrite = 0; str[nwrite]; nwrite++)
 		_putchar(str[nwrite]);
 	_putchar('\n');
