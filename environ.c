@@ -34,6 +34,7 @@ char *_getenv(record_t *envps, const char *key)
 
 	if (envps == NULL)
 		return (NULL);
+
 	node = envps;
 	len = _strlen(key);
 

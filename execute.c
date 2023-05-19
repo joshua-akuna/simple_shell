@@ -99,17 +99,17 @@ int execute(shell_t *state)
 char *is_sys_cmd(char *cmd, record_t *pathenv)
 {
 	record_t *pathvp = pathenv;
-	char *absolute_path = NULL, *token = NULL;
+	char *absolute_path = NULL, *dir = NULL;
 	int res;
 
 	res = isvalidcmd(cmd);
 	if (res == 0)
 		return (cmd);
 
-	while (pathvp)
+	while (pathvp != NULL)
 	{
-		token = (char *)pathvp->str;
-		absolute_path = append_file_to_dir(cmd, token);
+		dir = (char *)pathvp->str;
+		absolute_path = append_file_to_dir(dir, cmd);
 		res = isvalidcmd(absolute_path);
 		if (res == 0)
 			return (absolute_path);
@@ -157,18 +157,16 @@ int isvalidcmd(char *cmd)
  * Return: the absolute path of the file appended to the
  *	directory path.
  */
-char *append_file_to_dir(char *file, char *dir)
+char *append_file_to_dir(char *dir, char *file)
 {
 	char *sep = "/";
-	int len;
-	char *path = NULL;
+	char *res = NULL;
+	char *abs_path = NULL;
+	
 
-	path = _strdup(dir);
-	len = _strlen(file) + _strlen(path) + 1;
-	path = _realloc(path, len + 1);
-	_strcat(path, sep);
-	_strcat(path, file);
-	path[len] = '\0';
+	res = _strcat(dir, sep);
+	abs_path = _strcat(res, file);
 
-	return (path);
+	free(res);
+	return (abs_path);
 }

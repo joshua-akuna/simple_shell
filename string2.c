@@ -28,15 +28,27 @@ int _strlen(const char *str)
  */
 char *_strcat(char *dest, const char *src)
 {
-	unsigned int len = 0, i;
+	unsigned int len = 0, i, j;
+	char *str = NULL;
+
+	if (dest == NULL)
+		return (_strdup((char *)src));
+
+	if (src == NULL)
+		return (_strdup(dest));
+
+	len = _strlen(dest) + _strlen(src);
+	str = (char *)  malloc(sizeof(char) * (len + 1));
+	if (str == NULL)
+		return (NULL);
 
 	for (i = 0; dest[i]; i++)
-		len++;
-	for (i = 0; src[i]; i++)
-		dest[len + i] = src[i];
-	dest[len + i] = '\0';
+		str[i] = dest[i];
+	for (j = 0; src[j]; j++)
+		str[i + j] = src[j];
+	str[i + j] = '\0';
 
-	return (dest);
+	return (str);
 }
 
 /**
@@ -48,14 +60,19 @@ char *_strcat(char *dest, const char *src)
  */
 char *_strncat(char *dest, char *src, const unsigned int n)
 {
-	unsigned int len = 0, i;
+	unsigned int len = 0, i, j;
+	char *res = NULL;
+
+	len = _strlen(dest) + n;
+	res = (char *) malloc(sizeof(char) * (len + 1));
 
 	for (i = 0; dest[i]; i++)
-		len++;
-	for (i = 0; src[i] && i < n; i++)
-		dest[len + i] = src[i];
-	dest[len + i] = '\0';
-	return (dest);
+		res[i] = dest[i];
+	for (j = 0; src[j] && j < n; j++)
+		res[i + j] = src[j];
+	res[i + j] = '\0';
+
+	return (res);
 }
 
 /**

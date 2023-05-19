@@ -41,7 +41,7 @@ int _cddir(shell_t *state)
 			nextdir = _strdup(dir);
 		else
 		{
-			nextdir = append_file_to_dir(dir, curdir);
+			nextdir = append_file_to_dir(curdir, dir);
 			if (nextdir == NULL)
 				return (-1);
 		}
