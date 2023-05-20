@@ -9,8 +9,8 @@ int isvalidcmd(char *cmd);
  */
 int run_cmd(shell_t *state)
 {
-	char *args[16];
-	int status = 0;
+	char *args[32];
+	int status = 0, i = 0;
 	/* cloning line for this file */
 	char *line = _strdup(state->line);
 
@@ -37,6 +37,10 @@ int run_cmd(shell_t *state)
 			/* TODO: write a function to print errors.*/
 			return (127);
 		}
+		for (i = 0; state->cmds[i]; i++)
+			state->cmds[i] = substitute_var(state, state->cmds[i]);
+		for (i = 0; state->cmds[i]; i++)
+			free(state->cmds[i]);
 		status = execute(state);
 		free(state->cmd_path);
 	}

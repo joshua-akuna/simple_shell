@@ -18,7 +18,7 @@ char *_strdup(char *src)
 	/* gets the length of the string argument */
 	len = _strlen(src);
 	/* allocate a memory space of len and a null byte */
-	dest = malloc(len + 1);
+	dest = (char *) malloc((len + 1) * sizeof(char));
 	if (dest == NULL)
 		return (NULL);
 	/* copies the content of the src to the dest */

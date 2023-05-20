@@ -129,4 +129,7 @@ ssize_t get_line(char **lineptr, size_t *n, FILE *stream);
 
 int _atoi(char *str);
 char *_itoa(int num);
+
+/* substitute variable */
+char *substitute_var(shell_t *state, char *cmd);
 #endif

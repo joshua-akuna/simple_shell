@@ -16,10 +16,46 @@ char *append_value_to_name(char *name, char *value, const char *sep)
 	temp = _strcat(name, sep);
 	if (temp == NULL)
 		return (NULL);
-	
+
 	res = _strcat(temp, value);
 	free(temp);
 
+	return (res);
+}
+
+/**
+ * substitute_var - TODO:
+ * @state: a struct shell_state that stores the current state
+ *	of the simple shell program.
+ * @cmd: the input command to replace.
+ * Return: 0 if variable substitution was success or no
+ *	varaibles to substitute else return -1.
+ */
+char *substitute_var(shell_t *state, char *cmd)
+{
+	char *res = NULL;
+
+	if (cmd[0] != '$')
+		return (_strdup(cmd));
+
+	if (cmd[0] == '$' && cmd[1])
+	{
+		if (_strncmp("$?", cmd, _strlen(cmd)) == 0)
+			res = _itoa(12);
+		else if (_strncmp("$$", cmd, _strlen(cmd)) == 0)
+			res = _itoa(getpid());
+		else
+		{
+			res = _strstr(cmd, "$");
+			res = _getenv(state->envps, res + 1);
+			if (res == NULL)
+				res = _strdup(" ");
+		}
+	}
+	else
+	{
+		res = _strdup(cmd);
+	}
 	return (res);
 }
 
