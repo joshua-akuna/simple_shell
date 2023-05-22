@@ -24,14 +24,14 @@ char *append_value_to_name(char *name, char *value, const char *sep)
 }
 
 /**
- * substitute_var - TODO:
+ * substitution_handler - TODO:
  * @state: a struct shell_state that stores the current state
  *	of the simple shell program.
  * @cmd: the input command to replace.
  * Return: 0 if variable substitution was success or no
  *	varaibles to substitute else return -1.
  */
-char *substitute_var(shell_t *state, char *cmd)
+char *substitution_handler(shell_t *state, char *cmd)
 {
 	char *res = NULL;
 
@@ -40,9 +40,9 @@ char *substitute_var(shell_t *state, char *cmd)
 
 	if (cmd[0] == '$' && cmd[1])
 	{
-		if (_strncmp("$?", cmd, _strlen(cmd)) == 0)
-			res = _itoa(12);
-		else if (_strncmp("$$", cmd, _strlen(cmd)) == 0)
+		if (_strncmp("$?", cmd, 2) == 0)
+			res = _itoa(0);
+		else if (_strncmp("$$", cmd, 2) == 0)
 			res = _itoa(getpid());
 		else
 		{
@@ -125,14 +125,14 @@ char *_itoa(int num)
 	char *str = NULL, rem;
 	int num1 = num, num2 = num, len = 0, i;
 
+	if (num == 0)
+		return (_strdup("0"));
+
 	while (num1 != 0)
 	{
 		len++;
 		num1 /= 10;
 	}
-
-	if (num == 0)
-		len = 1;
 
 	str = (char *) malloc((len + 1) * sizeof(char));
 	if (str == NULL)

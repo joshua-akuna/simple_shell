@@ -7,7 +7,7 @@
  * Return: a pointer to the allocated memory
  *	else NULL if malloc fails.
  */
-char *_strdup(char *src)
+char *_strdup(const char *src)
 {
 	char *dest = NULL;
 	unsigned int  len = 0;

@@ -1,6 +1,5 @@
 #include "shell.h"
 
-char *create_alias_line(char *name, char *value);
 /**
  * handle_alias - handles all operations related to the
  *	alias command including print all aliases, printing aliases
@@ -33,7 +32,16 @@ int handle_alias(shell_t *state)
  */
 int print_all_aliases(shell_t *state)
 {
-	print_list(state->aliases);
+	record_t *head = state->aliases;
+	char *str = NULL;
+
+	while (head)
+	{
+		str = _strdup(head->str);
+		_puts(str);
+		free(str);
+		head = head->next;
+	}
 	return (0);
 }
 

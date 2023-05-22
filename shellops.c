@@ -1,7 +1,4 @@
 #include "shell.h"
-char *sub_variables(shell_t *state);
-char *sub_var_in_line(char *line, char *cmd);
-char *append_value_to_name(char *name, char *value, const char *sep);
 
 /**
  * infinite_loop - starts an infinite loop dislaying a prompt
@@ -18,7 +15,7 @@ int infinite_loop(shell_t *state)
 	while (1)
 	{
 		write(STDOUT_FILENO, prompt, _strlen(prompt));
-		if (getline(&(state->line), &line_len, stdin) == EOF)
+		if (_getline(&(state->line), &line_len, STDIN_FILENO) == EOF)
 		{
 			free(state->line);
 			_putchar('\n');
@@ -26,9 +23,27 @@ int infinite_loop(shell_t *state)
 		}
 		if ((state->line)[_strlen(state->line) - 1] == '\n')
 			state->line[_strlen(state->line) - 1] = '\0';
-		run_cmd(state);
+		semi_colon_handler(state);
+		/*run_cmd(state);*/
 		free(state->line);
+		state->and_op = 0;
+		state->or_op = 0;
 		state->line = NULL;
 	}
 	return (0);
+}
+
+int non_interactive(shell_t *state)
+{
+	size_t len = 0;
+
+	while (_getline(&(state->line), &len, state->fd) > 0)
+	{
+		_puts(state->line);
+		/*semi_colon_handler(state);*/
+		free(state->line);
+		state->and_op = 0;
+		state->or_op = 0;
+		state->line = NULL;
+	}
 }

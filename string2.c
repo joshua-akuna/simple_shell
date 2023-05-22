@@ -1,26 +1,5 @@
 #include "shell.h"
 /**
- * _strlen - determines the length of the string argument.
- * @str: a string argument.
- * Return: length of the string argument.
- */
-int _strlen(const char *str)
-{
-	int len = 0;
-	/* returns 0 if str is NULL */
-	if (str == NULL)
-		return (len);
-	/*
-	 * loops through the string and increments
-	 * the len field for each iteration
-	 */
-	while (str[len] != '\0')
-		len++;
-	/* returns the number of characters in the string */
-	return (len);
-}
-
-/**
  * _strcat - concatenates 2 strings.
  * @dest: string to concatenate to;
  * @src: string to be concatenated.
@@ -117,4 +96,24 @@ int _strncmp(const char *str1, const char *str2, const unsigned int n)
 		if (str1[i] != str2[i])
 			return (str1[i] - str2[i]);
 	return (0);
+}
+
+/**
+ * _strncpy - copies the character contents of src to dest.
+ * @dest: string to copy to.
+ * @src: string to copy from.
+ * @n: the number of bytes to copy.
+ * Return: pointer to the dest string.
+ */
+char *_strncpy(char *dest, char *src, int n)
+{
+	unsigned int i;
+
+	for (i = 0; i < (unsigned int)n && src[i] != '\0'; i++)
+		dest[i] = src[i];
+
+	for (; i < (unsigned int)n; i++)
+		dest[i] = '\0';
+
+	return (dest);
 }

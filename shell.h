@@ -11,6 +11,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <errno.h>
+#include <fcntl.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
@@ -35,8 +36,12 @@ typedef struct linkedlist_node
  *	state of the shell program.
  * @ac: the number of arguments received by the shell program.
  * @av: an array of string arguments received by the shell.
- * @line: the string of commands entered by the user into the
- *	command line interface.
+ * @line: the string of commands entered by the user
+ *	into the command line interface.
+ * @sc_line: stores a string for each token of the semi colon
+ *	delimited command to be executed.
+ * @logic_line: stores a string for each token of the logical operators
+ *	"&&||" delimited command to be executed.
  * @cmd_path: stores a path to the executable shell program if found.
  * @cmds: an array of the string tokens of the line string.
  * @filename: the filename of a script.
@@ -54,13 +59,19 @@ typedef struct shell_state
 	int ac;
 	char **av;
 	char *line;
+	char *sc_line;
+	char *logic_line;
+	char **logic_cmds;
 	char *cmd_path;
 	char **cmds;
+	char *stripped_cmd;
 	char *filename;
 	int fd;
 	record_t *envps;
 	record_t *path;
 	record_t *aliases;
+	int and_op;
+	int or_op;
 	int status_code;
 } shell_t;
 
@@ -78,7 +89,8 @@ char *_strncat(char *dest, char *src, const unsigned int n);
 int _strcmp(char *str1, char *str2);
 int _strncmp(const char *str1, const char *str2, const unsigned int n);
 char *_strpbrk(char *search, const char *accept);
-char *_strdup(char *src);
+char *_strncpy(char *dest, char *src, int n);
+char *_strdup(const char *src);
 char *_memcpy(void *dest, const void *src, size_t n);
 
 char *_strtok(char *str, const char *delim);
@@ -94,6 +106,7 @@ int handle_alias(shell_t *state);
 int print_all_aliases(shell_t *state);
 int print_aliases_by_name(shell_t *state);
 int put_alias(shell_t *state);
+char *create_alias_line(char *name, char *value);
 
 /* environ.c functions */
 int init_envp_list(record_t **head);
@@ -110,8 +123,6 @@ int delete_node_by_id(record_t **head, unsigned int id);
 size_t index_list_by_id(const record_t *head);
 size_t print_list(const record_t *head);
 void free_list(record_t *head);
-
-void construct(shell_t *state);
 
 int tokenize(char *tokens[], char *str, const char *delim);
 
@@ -132,4 +143,14 @@ char *_itoa(int num);
 
 /* substitute variable */
 char *substitute_var(shell_t *state, char *cmd);
+
+void semi_colon_handler(shell_t *state);
+void logic_handler(shell_t *state);
+
+char *substitution_handler(shell_t *state, char *cmd);
+
+int split_by_logic(shell_t *state);
+
+ssize_t _getline(char **lineptr, size_t *n, int fd);
+void sigint_handler(int signum);
 #endif

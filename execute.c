@@ -12,7 +12,7 @@ int run_cmd(shell_t *state)
 	char *args[32];
 	int status = 0, i = 0;
 	/* cloning line for this file */
-	char *line = _strdup(state->line);
+	char *line = _strdup(state->stripped_cmd);
 
 	tokenize(args, line, " \t\n");
 	state->cmds = args;
@@ -38,10 +38,10 @@ int run_cmd(shell_t *state)
 			return (127);
 		}
 		for (i = 0; state->cmds[i]; i++)
-			state->cmds[i] = substitute_var(state, state->cmds[i]);
+			state->cmds[i] = substitution_handler(state, state->cmds[i]);
+		status = execute(state);
 		for (i = 0; state->cmds[i]; i++)
 			free(state->cmds[i]);
-		status = execute(state);
 		free(state->cmd_path);
 	}
 	/* freeing line for this file */
@@ -166,7 +166,6 @@ char *append_file_to_dir(char *dir, char *file)
 	char *sep = "/";
 	char *res = NULL;
 	char *abs_path = NULL;
-	
 
 	res = _strcat(dir, sep);
 	abs_path = _strcat(res, file);
