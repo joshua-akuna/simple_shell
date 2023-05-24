@@ -1,6 +1,7 @@
 #include "shell.h"
 
 char *get_current_dir(void);
+void free_all(shell_t *state);
 /**
  * _cddir - changes the current working directory of the
  *	current shell execution environment.
@@ -111,16 +112,27 @@ void exitshell(shell_t *state)
 	int code = EXIT_SUCCESS;
 	int status;
 
-	if (state->av[1] != NULL)
+	if (state->av[1])
 	{
 		status = _atoi(state->av[1]);
+		if (status == -1)
+		{
+			code = 1;
+			free_all(state);
+			exit(code);
+		}
 		code = status;
 	}
+	free_all(state);
+	exit(code);
+}
+
+
+void free_all(shell_t *state)
+{
 	free(state->line);
 	free(state->stripped_cmd);
 	free_list(state->path);
 	free_list(state->envps);
 	free_list(state->aliases);
-
-	exit(code);
 }
