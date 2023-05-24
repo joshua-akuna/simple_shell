@@ -128,6 +128,12 @@ void exitshell(shell_t *state)
 }
 
 
+/**
+ * free_all - frees the dynamic allocated memory of the state.
+ * @state: a shell_state struct that stores the current
+ *	state of the simple shell program.
+ * Return: Nothing.
+ */
 void free_all(shell_t *state)
 {
 	free(state->line);
