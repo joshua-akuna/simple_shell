@@ -58,22 +58,20 @@ int run_cmd(shell_t *state)
 int execute(shell_t *state)
 {
 	pid_t cpid, tcpid;
-	int wstatus = 0, status_code, err;
+	int wstatus;
 
 	cpid = fork();
 	if (cpid == -1) /* checks if the fork call is successful */
 	{
-		perror("Error:");
+		perror("error:");
 		return (1);
 	}
-
 	if (cpid == 0) /* executes for the child process */
 	{
 		/* executing the program file*/
-		err = execve(state->cmd_path, state->cmds, environ);
-		/* could not find the program file to execute */
-		if (err == -1)
+		if (execve(state->cmd_path, state->cmds, environ) == -1)
 		{
+			/* could not find the program file to execute */
 			perror("execve");
 			return (2);
 		}
@@ -88,9 +86,17 @@ int execute(shell_t *state)
 			return (2);
 		}
 		if (WIFEXITED(wstatus))
-			status_code = WEXITSTATUS(wstatus);
+		{
+			state->status_code = WEXITSTATUS(wstatus);
+			if (state->status_code == 126)
+			{
+				printerr(_itoa(2));
+				printerr("Illegal number: ");
+				printerr("\n");
+			}
+		}
 	}
-	return (status_code);
+	return (state->status_code);
 }
 
 /**
@@ -121,11 +127,23 @@ char *is_sys_cmd(char *cmd, record_t *pathenv)
 		pathvp = pathvp->next;
 	}
 	if (res == -1)
-		printerr("sss", "-bash: ", cmd, ": command not found\n");
+	{
+		printerr("-bash: ");
+		printerr(cmd);
+		printerr(": command not found\n");
+	}
 	else if (res == -2)
-		printerr("sss", "-bash:", cmd, ": permission denied\n");
+	{
+		printerr("-bash: ");
+		printerr(cmd);
+		printerr(": permission denied\n");
+	}
 	else if (res == -3)
-		printerr("sss", "-bash: ", cmd, ": Is a directory\n");
+	{
+		printerr("-bash: ");
+		printerr(cmd);
+		printerr(": Is a directory\n");
+	}
 	return (NULL);
 }
 

@@ -36,7 +36,10 @@ int main(int ac, char **av)
 				return (126);
 			if (errno == ENOENT)
 			{
-				printerr("ssss", av[0], ": 0: Can't open ", av[1], "\n");
+				printerr(av[0]);
+				printerr(": 0: Can't open ");
+				printerr(av[1]);
+				printerr("\n");
 				return (127);
 			}
 		}

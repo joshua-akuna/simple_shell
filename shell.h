@@ -84,7 +84,7 @@ typedef struct shell_state
 ssize_t _getline(char **lineptr, size_t *n, int fd);
 int _putchar(const char c);
 int _puts(const char *str);
-void printerr(char *fmt, ...);
+int printerr(const char *str);
 
 int non_interactive(shell_t *state);
 int interactive_loop(shell_t *state);

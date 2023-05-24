@@ -35,32 +35,7 @@ int _puts(const char *str)
  *	to be printed.
  * Return: Nothing.
  */
-void printerr(char *format, ...)
+int printerr(const char *str)
 {
-	va_list valist;
-	int num;
-	char *n;
-	char c;
-	char *str;
-
-	va_start(valist, format);
-
-	while (*format)
-		switch (*format++)
-		{
-			case 's':
-				str = va_arg(valist, char *);
-				write(STDERR_FILENO, str, _strlen(str));
-				break;
-			case 'd':
-				num = va_arg(valist, int);
-				n = _itoa(num);
-				write(STDERR_FILENO, &n, _strlen(n));
-				break;
-			case 'c':
-				c = (char) va_arg(valist, int);
-				write(STDERR_FILENO, &c, 1);
-				break;
-		}
-	va_end(valist);
+	return write(STDERR_FILENO, str, _strlen(str));
 }
