@@ -32,8 +32,13 @@ int main(int ac, char **av)
 		state.fd = open(filename, O_RDONLY);
 		if (state.fd == -1)
 		{
-			_puts("Permission denied");
-			return (127);
+			if (errno == EACCES)
+				return (126);
+			if (errno == ENOENT)
+			{
+				printerr("ssss", av[0], ": 0: Can't open ", av[1], "\n");
+				return (127);
+			}
 		}
 		non_interactive(&state);
 	}
