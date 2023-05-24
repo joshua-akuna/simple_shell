@@ -64,9 +64,10 @@ int _cddir(shell_t *state)
 	if (S_ISDIR(st.st_mode) == 0)
 	{
 		printerr(state->av[0]);
+		printerr(": cd: ");
+		printerr(dir);
 		printerr(": ");
-		printerr("No such file or directory");
-		printerr(state->av[1]);
+		printerr("Not a direcotry");
 		printerr("\n");
 		free(nextdir);
 		free(dir);
