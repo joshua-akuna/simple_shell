@@ -102,6 +102,7 @@ int execute(shell_t *state)
  * is_sys_cmd - finds the command program in the PATH variable.
  * @cmd: a user input string to a program file.
  * @pathenv: a fresh copy of an array of strings for the PATH variable.
+ * @name: the first argument of the argv array.
  * Return: an absolute path to the command program if command found
  *	else NULL.
  */

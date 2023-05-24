@@ -31,11 +31,11 @@ int _puts(const char *str)
 /**
  * printerr - a variable argument function that prints an error
  *	message to the standard error.
- * @format: a string that defines the format for the string arguments
+ * @str: a string that defines the format for the string arguments
  *	to be printed.
  * Return: Nothing.
  */
 int printerr(const char *str)
 {
-	return write(STDERR_FILENO, str, _strlen(str));
+	return (write(STDERR_FILENO, str, _strlen(str)));
 }
