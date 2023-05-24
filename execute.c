@@ -136,12 +136,14 @@ char *is_sys_cmd(char *cmd, record_t *pathenv, char *name)
 	else if (res == -2)
 	{
 		printerr(name);
+		printerr(": 1: ");
 		printerr(cmd);
 		printerr(": permission denied\n");
 	}
 	else if (res == -3)
 	{
 		printerr(name);
+		printerr(": 1: ");
 		printerr(cmd);
 		printerr(": Is a directory\n");
 	}

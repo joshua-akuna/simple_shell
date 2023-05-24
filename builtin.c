@@ -50,7 +50,12 @@ int _cddir(shell_t *state)
 	}
 	if (stat(nextdir, &st) != 0)
 	{
-		_puts("-bash: cd: dir: No such file or directory");
+		printerr(state->av[0]);
+		printerr(": cd: ");
+		printerr(dir);
+		printerr(": ");
+		printerr("No such file or directory");
+		printerr("\n");
 		free(nextdir);
 		free(dir);
 		free(curdir);
@@ -58,7 +63,11 @@ int _cddir(shell_t *state)
 	}
 	if (S_ISDIR(st.st_mode) == 0)
 	{
-		_puts("-bash: cd: dir: Not a directory");
+		printerr(state->av[0]);
+		printerr(": ");
+		printerr("No such file or directory");
+		printerr(state->av[1]);
+		printerr("\n");
 		free(nextdir);
 		free(dir);
 		free(curdir);
@@ -68,7 +77,7 @@ int _cddir(shell_t *state)
 	{
 		printerr(state->av[0]);
 		printerr(": ");
-		printerr("can't cd to ");
+		printerr("No such file or directory");
 		printerr(state->av[1]);
 		printerr("\n");
 	}
