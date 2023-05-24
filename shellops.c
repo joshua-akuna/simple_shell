@@ -14,11 +14,13 @@ int interactive_loop(shell_t *state)
 
 	while (1)
 	{
-		write(STDOUT_FILENO, prompt, _strlen(prompt));
+		if (isatty(STDIN_FILENO))
+			write(STDOUT_FILENO, prompt, _strlen(prompt));
 		if (_getline(&(state->line), &line_len, STDIN_FILENO) == EOF)
 		{
 			free(state->line);
-			_putchar('\n');
+			if (isatty(STDIN_FILENO))
+				_putchar('\n');
 			break;
 		}
 		if ((state->line)[_strlen(state->line) - 1] == '\n')
