@@ -31,10 +31,9 @@ int run_cmd(shell_t *state)
 		exitshell(state);
 	else
 	{
-		state->cmd_path = is_sys_cmd(args[0], state->path);
+		state->cmd_path = is_sys_cmd(args[0], state->path, state->av[0]);
 		if (state->cmd_path == NULL)
 		{
-			free(line);
 			return (127);
 		}
 		for (i = 0; state->cmds[i]; i++)
@@ -106,7 +105,7 @@ int execute(shell_t *state)
  * Return: an absolute path to the command program if command found
  *	else NULL.
  */
-char *is_sys_cmd(char *cmd, record_t *pathenv)
+char *is_sys_cmd(char *cmd, record_t *pathenv, char *name)
 {
 	record_t *pathvp = pathenv;
 	char *absolute_path = NULL, *dir = NULL;
@@ -128,19 +127,20 @@ char *is_sys_cmd(char *cmd, record_t *pathenv)
 	}
 	if (res == -1)
 	{
-		printerr("-bash: ");
+		printerr(name);
+		printerr(": 1: ");
 		printerr(cmd);
-		printerr(": command not found\n");
+		printerr(": not found\n");
 	}
 	else if (res == -2)
 	{
-		printerr("-bash: ");
+		printerr(name);
 		printerr(cmd);
 		printerr(": permission denied\n");
 	}
 	else if (res == -3)
 	{
-		printerr("-bash: ");
+		printerr(name);
 		printerr(cmd);
 		printerr(": Is a directory\n");
 	}

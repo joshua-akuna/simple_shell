@@ -107,7 +107,7 @@ char *_strtok(char *str, const char *delim);
 size_t _malloc_usable_size(void *ptr);
 void *_realloc(void *old_blk, size_t size);
 
-char *is_sys_cmd(char *cmd, record_t *pathenv);
+char *is_sys_cmd(char *cmd, record_t *pathenv, char *name);
 
 /* aliases.c functions */
 char *append_file_to_dir(char *file, char *dir);

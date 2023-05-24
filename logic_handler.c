@@ -41,6 +41,7 @@ int split_by_logic(shell_t *state)
 {
 	char *cmds[32];
 	char *line = _strdup(state->sc_line);
+	/*char *line = state->sc_line;*/
 
 	fill_logic_array(cmds, line);
 	state->logic_cmds = cmds;
