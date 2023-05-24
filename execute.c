@@ -129,9 +129,9 @@ char *is_sys_cmd(char *cmd, record_t *pathenv, char *name)
 	if (res == -1)
 	{
 		printerr(name);
-		printerr(": 1: ");
+		printerr(": ");
 		printerr(cmd);
-		printerr(": not found\n");
+		printerr(": command not found\n");
 	}
 	else if (res == -2)
 	{
