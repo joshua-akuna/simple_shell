@@ -43,10 +43,10 @@ void printerr(char *format, ...)
 	char c;
 	char *str;
 
-	va_start(valist, fmt);
+	va_start(valist, format);
 
-	while (*fmt)
-		switch (*fmt++)
+	while (*format)
+		switch (*format++)
 		{
 			case 's':
 				str = va_arg(valist, char *);
