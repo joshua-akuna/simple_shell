@@ -64,11 +64,19 @@ int _cddir(shell_t *state)
 		free(curdir);
 		return (-1);
 	}
-	if (chdir(nextdir) == 0)
+	if (chdir(nextdir) == -1)
+	{
+		printerr(state->av[0]);
+		printerr(": ");
+		printerr("can't cd to ");
+		printerr(state->av[1]);
+		printerr("\n");
+	}
+	else
 	{
 		_setenv(state, "OLDPWD", curdir);
 		_setenv(state, "PWD", nextdir);
-	}
+	}	
 	free(nextdir);
 	free(curdir);
 	free(dir);
