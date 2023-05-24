@@ -109,7 +109,13 @@ char *get_current_dir(void)
 void exitshell(shell_t *state)
 {
 	int code = EXIT_SUCCESS;
+	int status;
 
+	if (state->av[1] != NULL)
+	{
+		status = _atoi(state->av[1]);
+		code = status;
+	}
 	free(state->line);
 	free(state->stripped_cmd);
 	free_list(state->path);
