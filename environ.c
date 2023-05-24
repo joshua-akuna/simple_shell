@@ -1,6 +1,5 @@
 #include "shell.h"
 
-char *append_value_to_name(char *name, char *value, const char *sep);
 /**
  * init_envp_list - creates a linked list from the for the
  *	shell environment variable.

@@ -12,7 +12,7 @@ int run_cmd(shell_t *state)
 	char *args[32];
 	int status = 0, i = 0;
 	/* cloning line for this file */
-	char *line = _strdup(state->stripped_cmd);
+	char *line = state->stripped_cmd;
 
 	tokenize(args, line, " \t\n");
 	state->cmds = args;
@@ -27,14 +27,14 @@ int run_cmd(shell_t *state)
 		_unsetenv(state);
 	else if (_strcmp(state->cmds[0], "alias") == 0)
 		handle_alias(state);
+	else if (_strcmp(state->cmds[0], "exit") == 0)
+		exitshell(state);
 	else
 	{
-		/*_puts("no match");*/
 		state->cmd_path = is_sys_cmd(args[0], state->path);
 		if (state->cmd_path == NULL)
 		{
 			free(line);
-			/* TODO: write a function to print errors.*/
 			return (127);
 		}
 		for (i = 0; state->cmds[i]; i++)
@@ -45,7 +45,7 @@ int run_cmd(shell_t *state)
 		free(state->cmd_path);
 	}
 	/* freeing line for this file */
-	free(line);
+	/*free(line);*/
 	return (status);
 }
 
@@ -108,7 +108,7 @@ char *is_sys_cmd(char *cmd, record_t *pathenv)
 
 	res = isvalidcmd(cmd);
 	if (res == 0)
-		return (cmd);
+		return (_strdup(cmd));
 
 	while (pathvp != NULL)
 	{
@@ -121,19 +121,18 @@ char *is_sys_cmd(char *cmd, record_t *pathenv)
 		pathvp = pathvp->next;
 	}
 	if (res == -1)
-		dprintf(STDERR_FILENO, "%s: command not found\n", cmd);
+		printerr("sss", "-bash: ", cmd, ": command not found\n");
 	else if (res == -2)
-		dprintf(STDERR_FILENO, "%s: permission denied\n", cmd);
+		printerr("sss", "-bash:", cmd, ": permission denied\n");
 	else if (res == -3)
-		dprintf(STDERR_FILENO, "-bash: %s: Is a directory\n", cmd);
+		printerr("sss", "-bash: ", cmd, ": Is a directory\n");
 	return (NULL);
 }
 
 /**
  * isvalidcmd - checks if the user command is a valid executable program.
  * @cmd: the user command to validate.
- * Return: 0 if command is a valid executable program
- *	else -1
+ * Return: 0 if command is a valid executable program else -1
  */
 int isvalidcmd(char *cmd)
 {
@@ -169,7 +168,7 @@ char *append_file_to_dir(char *dir, char *file)
 
 	res = _strcat(dir, sep);
 	abs_path = _strcat(res, file);
-
 	free(res);
+
 	return (abs_path);
 }

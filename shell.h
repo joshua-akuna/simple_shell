@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <unistd.h>
+#include <stdarg.h>
 #include <limits.h>
 #include <stdint.h>
 #include <string.h>
@@ -40,6 +41,8 @@ typedef struct linkedlist_node
  *	into the command line interface.
  * @sc_line: stores a string for each token of the semi colon
  *	delimited command to be executed.
+ * @logic_cmds: TODO
+ * @stripped_cmd: TODO
  * @logic_line: stores a string for each token of the logical operators
  *	"&&||" delimited command to be executed.
  * @cmd_path: stores a path to the executable shell program if found.
@@ -52,6 +55,8 @@ typedef struct linkedlist_node
  *	path variables of the system.
  * @aliases: a linkedlist of type record_t that stores the
  *	aliases for the shell.
+ * @and_op: the current status of the and operator.
+ * @or_op: the current status of the or operator.
  * @status_code: the current status code of the shell.
  */
 typedef struct shell_state
@@ -79,6 +84,10 @@ typedef struct shell_state
 ssize_t _getline(char **lineptr, size_t *n, int fd);
 int _putchar(const char c);
 int _puts(const char *str);
+void printerr(char *fmt, ...);
+
+int non_interactive(shell_t *state);
+int interactive_loop(shell_t *state);
 
 /* string[1|2].c functions */
 int _strlen(const char *str);
@@ -153,4 +162,7 @@ int split_by_logic(shell_t *state);
 
 ssize_t _getline(char **lineptr, size_t *n, int fd);
 void sigint_handler(int signum);
+
+char *append_value_to_name(char *name, char *value, const char *sep);
+void exitshell(shell_t *state);
 #endif

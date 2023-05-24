@@ -99,3 +99,22 @@ char *get_current_dir(void)
 		}
 	}
 }
+
+/**
+ * exitshell - terminates the calling process.
+ * @state: a shell_state struct that stores the current
+ *	state of the simple shell program.
+ * Return: Nothing.
+ */
+void exitshell(shell_t *state)
+{
+	int code = EXIT_SUCCESS;
+
+	free(state->line);
+	free(state->stripped_cmd);
+	free_list(state->path);
+	free_list(state->envps);
+	free_list(state->aliases);
+
+	exit(code);
+}

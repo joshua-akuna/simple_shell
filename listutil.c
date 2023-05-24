@@ -111,7 +111,6 @@ size_t print_list(const record_t *head)
 		return (0);
 	str = (char *)head->str;
 	_puts(str);
-	/*printf("%i: %s\n", head->id, head->str);*/
 	return (1 + (print_list(head->next)));
 }
 
@@ -132,6 +131,5 @@ size_t index_list_by_id(const record_t *head)
 		node->id = id++;
 		node = node->next;
 	}
-
 	return (id);
 }

@@ -12,7 +12,7 @@ int run_by_logic(shell_t *state);
  */
 void semi_colon_handler(shell_t *state)
 {
-	char *line = _strdup(state->line);
+	char *line = state->line;
 	char *semi_colon_cmds[32];
 	int i;
 
@@ -23,8 +23,10 @@ void semi_colon_handler(shell_t *state)
 		/*run_cmd(state);*/
 		split_by_logic(state);
 		/*_puts(state->sc_line);*/
+		state->and_op = 0;
+		state->or_op = 0;
 	}
-	free(line);
+	/*free(line);*/
 }
 
 /**
@@ -101,7 +103,7 @@ void fill_logic_array(char *cmds[], char *line)
 /**
  * logic_handler - splits the lines entered by the user using
  *	the "&&" and "||" delimiters and executes each token.
- * @cmds: a struct shell_state variable that stores the
+ * @state: a struct shell_state variable that stores the
  *	initial state of the shell program.
  * Return: Nothing.
  */
@@ -126,21 +128,17 @@ void logic_handler(shell_t *state)
 		else
 		{
 			state->stripped_cmd = cmds[i];
-			/*_puts(state->stripped_cmd);*/
 			status = run_by_logic(state);
 			state->status_code = status;
 		}
 	}
-	/*_puts("DEBUG");*/
 }
 
 /**
  * run_by_logic - runs the command inputs based on the
  *	logical operators.
- * @cmd: a executable string command.
- * @status: current shell status.
- * @and: represents the and operator.
- * @or: represents the or operator.
+ * @state: a struct of type shell_state that stores the current
+ *	state of the shell program.
  * Return: status for the new operation.
  */
 int run_by_logic(shell_t *state)
