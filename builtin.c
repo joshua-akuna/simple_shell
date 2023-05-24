@@ -67,7 +67,7 @@ int _cddir(shell_t *state)
 		printerr(": cd: ");
 		printerr(dir);
 		printerr(": ");
-		printerr("Not a direcotry");
+		printerr("Not such file or direcotry");
 		printerr("\n");
 		free(nextdir);
 		free(dir);
