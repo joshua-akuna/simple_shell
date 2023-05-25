@@ -28,12 +28,11 @@ int init_envp_list(record_t **envps)
 char *_getenv(record_t *envps, const char *key)
 {
 	record_t *node = NULL;
-	char *str = NULL, *ptr;
-	size_t len = 0, vlen = 0;
+	char *str = NULL, *val;
+	size_t len = 0;
 
 	if (envps == NULL)
 		return (NULL);
-
 	node = envps;
 	len = _strlen(key);
 
@@ -42,10 +41,9 @@ char *_getenv(record_t *envps, const char *key)
 		str = (char *)node->str;
 		if (strncmp(str, key, len) == 0 && str[len] == '=')
 		{
-			ptr = _strdup(str + len + 1);
-			vlen = _strlen(str) - len;
-			ptr[vlen] = '\0';
-			return (ptr);
+			val = strchr(str, '=');
+			val++;
+			return (_strdup(val));
 		}
 		node = node->next;
 	}
