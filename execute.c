@@ -56,10 +56,6 @@ int execute(shell_t *state)
 {
 	pid_t cpid, tcpid;
 	int wstatus;
-	int i;
-
-	for (i = 0; state->cmds[i]; i++)
-		_puts(state->cmds[i]);
 
 	cpid = fork();
 	if (cpid == -1) /* checks if the fork call is successful */
