@@ -1,5 +1,6 @@
 #include "shell.h"
 
+int validate_input(char *line, char *name);
 /**
  * interactive_loop - starts an infinite loop dislaying a prompt
  *	if shell is in interactive mode.
@@ -25,7 +26,8 @@ int interactive_loop(shell_t *state)
 		}
 		if ((state->line)[_strlen(state->line) - 1] == '\n')
 			state->line[_strlen(state->line) - 1] = '\0';
-		semi_colon_handler(state);
+		if (validate_input(state->line, state->av[0]) == 0)
+			semi_colon_handler(state);
 		free(state->line);
 		state->line = NULL;
 	}
@@ -47,9 +49,58 @@ int non_interactive(shell_t *state)
 	{
 		if ((state->line)[_strlen(state->line) - 1] == '\n')
 			state->line[_strlen(state->line) - 1] = '\0';
-		semi_colon_handler(state);
+		if (validate_input(state->line, state->av[0]) == 0)
+			semi_colon_handler(state);
 		free(state->line);
 		state->line = NULL;
 	}
 	return (state->status_code);
+}
+
+/**
+ * validate_input - checks if the user command starts
+ *	with valid characters.
+ * @line: user input line.
+ * @name: the first argument of argv array.
+ * Return: 0 if userinput is valid else -1.
+ */
+int validate_input(char *line, char *name)
+{
+	if (*line == ';' && *(line + 1) == ';')
+	{
+		printerr(name);
+		printerr(": syntax error near unexpected token ';;'\n");
+		return (-1);
+	}
+	else if (*line == ';')
+	{
+		printerr(name);
+		printerr(": syntax error near unexpected token ';'\n");
+		return (-1);
+	}
+	else if (*line == '&' && *(line + 1) == '&')
+	{
+		printerr(name);
+		printerr(": syntax error near unexpected token '&&'\n");
+		return (-1);
+	}
+	else if (*line == '&')
+	{
+		printerr(name);
+		printerr(": syntax error near unexpected token '&'\n");
+		return (-1);
+	}
+	else if (*line == '|' && *(line + 1) == '|')
+	{
+		printerr(name);
+		printerr(": syntax error near unexpected token '||'\n");
+		return (-1);
+	}
+	else if (*line == '|')
+	{
+		printerr(name);
+		printerr(": syntax error near unexpected token '|'\n");
+		return (-1);
+	}
+	return (0);
 }

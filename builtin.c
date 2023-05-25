@@ -86,7 +86,7 @@ int _cddir(shell_t *state)
 	{
 		_setenv(state, "OLDPWD", curdir);
 		_setenv(state, "PWD", nextdir);
-	}	
+	}
 	free(nextdir);
 	free(curdir);
 	free(dir);
