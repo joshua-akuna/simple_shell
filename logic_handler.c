@@ -12,7 +12,7 @@ int run_by_logic(shell_t *state);
  */
 void semi_colon_handler(shell_t *state)
 {
-	char *line = state->line;
+	char *line = state->cmd;
 	char *semi_colon_cmds[32];
 	int i;
 
@@ -47,7 +47,6 @@ int split_by_logic(shell_t *state)
 	state->logic_cmds = cmds;
 	logic_handler(state);
 	free(line);
-
 	return (0);
 }
 
@@ -91,11 +90,11 @@ void fill_logic_array(char *cmds[], char *line)
 		{
 			if (first_cmd)
 			{
-				cmds[j++] = _strtok(line, "\n");
+				cmds[j++] = _strtok(line, "\0\n");
 				first_cmd = 0;
 			}
 			else
-				cmds[j++] = _strtok(NULL, "\n");
+				cmds[j++] = _strtok(NULL, "\0\n");
 		}
 	}
 	cmds[j] = NULL;

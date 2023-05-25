@@ -12,6 +12,8 @@ int interactive_loop(shell_t *state)
 {
 	const char *prompt = "$ ";
 	size_t line_len = 0;
+	char *cmds[16];
+	int i;
 
 	while (1)
 	{
@@ -26,7 +28,20 @@ int interactive_loop(shell_t *state)
 		}
 		if ((state->line)[_strlen(state->line) - 1] == '\n')
 			state->line[_strlen(state->line) - 1] = '\0';
-		semi_colon_handler(state);
+		if (isatty(STDIN_FILENO))
+		{
+			state->cmd = state->line;
+			semi_colon_handler(state);
+		}
+		else
+		{
+			tokenize(cmds, state->line, " \t\n");
+			for (i = 0; cmds[i]; i++)
+			{
+				state->cmd = cmds[i];
+				semi_colon_handler(state);
+			}
+		}
 		free(state->line);
 		state->line = NULL;
 	}

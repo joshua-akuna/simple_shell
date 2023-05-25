@@ -10,7 +10,7 @@ int infinite_loop(shell_t *state);
 int main(int ac, char **av)
 {
 	shell_t state = {
-		0, NULL, NULL, NULL, NULL, NULL, NULL,
+		0, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
 		NULL, NULL, NULL, -2, NULL, NULL, NULL,
 		0, 0, 0,
 	};

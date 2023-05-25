@@ -47,6 +47,7 @@ typedef struct linkedlist_node
  *	"&&||" delimited command to be executed.
  * @cmd_path: stores a path to the executable shell program if found.
  * @cmds: an array of the string tokens of the line string.
+ * @cmd: a string token command.
  * @filename: the filename of a script.
  * @fd: a file descriptor to the filename.
  * @envps: a linkedlist of type record_t that stores the
@@ -64,6 +65,7 @@ typedef struct shell_state
 	int ac;
 	char **av;
 	char *line;
+	char *cmd;
 	char *sc_line;
 	char *logic_line;
 	char **logic_cmds;
