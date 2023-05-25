@@ -26,8 +26,7 @@ int interactive_loop(shell_t *state)
 		}
 		if ((state->line)[_strlen(state->line) - 1] == '\n')
 			state->line[_strlen(state->line) - 1] = '\0';
-		if (validate_input(state->line, state->av[0]) == 0)
-			semi_colon_handler(state);
+		semi_colon_handler(state);
 		free(state->line);
 		state->line = NULL;
 	}
@@ -49,8 +48,7 @@ int non_interactive(shell_t *state)
 	{
 		if ((state->line)[_strlen(state->line) - 1] == '\n')
 			state->line[_strlen(state->line) - 1] = '\0';
-		if (validate_input(state->line, state->av[0]) == 0)
-			semi_colon_handler(state);
+		semi_colon_handler(state);
 		free(state->line);
 		state->line = NULL;
 	}

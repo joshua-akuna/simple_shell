@@ -13,7 +13,7 @@ char *_strdup(const char *src)
 	unsigned int  len = 0;
 
 	/* checks that the string argument is valid */
-	if (src == NULL || src[0] == '\0')
+	if (src == NULL)
 		return (NULL);
 	/* gets the length of the string argument */
 	len = _strlen(src);
@@ -22,7 +22,7 @@ char *_strdup(const char *src)
 	if (dest == NULL)
 		return (NULL);
 	/* copies the content of the src to the dest */
-	_memcpy(dest, src, len);
+	_strncpy(dest, (char *)src, len);
 	/* add a terminating null byte at the end of the dest */
 	dest[len] = '\0';
 
