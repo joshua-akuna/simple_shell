@@ -117,3 +117,18 @@ int validate_input(char *line, char *name)
 	}
 	return (0);
 }
+
+/**
+ * sigint_handler - a handler function for the SIGINT signal
+ *	(Control-C combination keys).
+ * @signum: .
+ */
+void sigint_handler(int signum)
+{
+	(void)signum;
+	_putchar('\n');
+	_putchar('$');
+	_putchar(' ');
+	fflush(stdout);
+}
+

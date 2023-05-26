@@ -144,11 +144,6 @@ int _cddir(shell_t *state);
 
 /*exit function*/
 int exit_shell(shell_t *datash);
-
-/* getline functions */
-void bring_line(char **lineptr, size_t *n, char *buffer, size_t j);
-ssize_t get_line(char **lineptr, size_t *n, FILE *stream);
-
 int _atoi(char *str);
 char *_itoa(int num);
 
@@ -164,6 +159,9 @@ int split_by_logic(shell_t *state);
 
 ssize_t _getline(char **lineptr, size_t *n, int fd);
 void sigint_handler(int signum);
+int validate_line_param(char **lineptr, size_t *n, int fd);
+int realloc_line(char **lineptr, size_t *n, size_t line_len);
+char *find_newline(char *bpos, char *bstop);
 
 char *append_value_to_name(char *name, char *value, const char *sep);
 void exitshell(shell_t *state);
